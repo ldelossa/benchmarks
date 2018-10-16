@@ -425,14 +425,19 @@ flags.DEFINE_integer('agg_small_grads_max_group', 10,
                      'When aggregating small tensors for all-reduce do not '
                      'aggregate more than this many into one new tensor.')
 
+job_name = os.environ.get('JOB_NAME', '')
+task_index = os.environ.get('TASK_INDEX', 0)
+ps_hosts = os.environ.get('PS_HOSTS', '')
+worker_hosts = os.environ.get('WORKER_HOSTS')
+
 # Distributed training parameters.
-flags.DEFINE_enum('job_name', '', ('ps', 'worker', 'controller', ''),
+flags.DEFINE_enum('job_name', job_name, ('ps', 'worker', 'controller', ''),
                   'One of "ps", "worker", "controller", "".  Empty for local '
                   'training')
-flags.DEFINE_string('ps_hosts', '', 'Comma-separated list of target hosts')
-flags.DEFINE_string('worker_hosts', '', 'Comma-separated list of target hosts')
+flags.DEFINE_string('ps_hosts', ps_hosts, 'Comma-separated list of target hosts')
+flags.DEFINE_string('worker_hosts', worker_hosts, 'Comma-separated list of target hosts')
 flags.DEFINE_string('controller_host', None, 'optional controller host')
-flags.DEFINE_integer('task_index', 0, 'Index of task within the job')
+flags.DEFINE_integer('task_index', task_index, 'Index of task within the job')
 flags.DEFINE_string('server_protocol', 'grpc', 'protocol for servers')
 flags.DEFINE_boolean('cross_replica_sync', True, '')
 flags.DEFINE_string('horovod_device', '', 'Device to do Horovod all-reduce on: '
