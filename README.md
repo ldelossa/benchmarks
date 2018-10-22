@@ -28,3 +28,15 @@ Currently running benchmarks:
 https://benchmarks-dot-tensorflow-testing.appspot.com/
 
 For any questions, please contact annarev@google.com.
+
+# To run on Clusterone in Distributed Mode
+
+```python3 scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py --num_gpus=8 --model=resnet50 --variable_update=distributed_replicated --data_format=NCHW --batch_size=32 --local_parameter_device=gpu```
+
+Strongly recommended to use --gradient_repacking to optimise 
+
+Best results so far:
+--nodistortions
+--gradient_repacking=8
+--use_fp16
+--local_parameter_device=gpu
