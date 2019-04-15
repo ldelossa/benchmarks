@@ -658,7 +658,7 @@ flags.DEFINE_integer('trt_max_workspace_size_bytes', 4 << 30,
                      'Max workspace size bytes used by the TensorRT optimizer.')
 
 # Benchmark logging for model garden metric
-flags.DEFINE_string('benchmark_log_dir', export_dir,
+flags.DEFINE_string('benchmark_log_dir', None,
                     'The directory to place the log files containing the '
                     'results of benchmark. The logs are created by '
                     'BenchmarkFileLogger. Requires the root of the Tensorflow '
