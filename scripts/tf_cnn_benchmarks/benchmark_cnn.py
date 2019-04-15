@@ -616,6 +616,11 @@ flags.DEFINE_string('horovod_device', '', 'Device to do Horovod all-reduce on: '
                     'option, and CPU otherwise.')
 
 # Summary and Save & load checkpoints.
+
+data_dir = os.path.abspath(os.environ.get('PS_JOBSPACE', os.getcwd()) + '/data')
+model_dir = os.path.abspath(os.environ.get('PS_MODEL_PATH', os.getcwd() + '/models') + '/benchmark')
+export_dir = os.path.abspath(os.environ.get('PS_MODEL_PATH', os.getcwd() + '/models'))
+
 flags.DEFINE_integer('summary_verbosity', 0, 'Verbosity level for summary ops. '
                      'level 0: disable any summary.\n'
                      'level 1: small and fast ops, e.g.: learning_rate, '
@@ -637,10 +642,10 @@ flags.DEFINE_integer('save_model_steps', None,
                      'save_model_secs must not be specified.')
 flags.DEFINE_integer('max_ckpts_to_keep', 5,
                      'Max number of checkpoints to keep.')
-flags.DEFINE_string('train_dir', None,
+flags.DEFINE_string('train_dir', export_dir,
                     'Path to session checkpoints. Pass None to disable saving '
                     'checkpoint at the end.')
-flags.DEFINE_string('eval_dir', '/tmp/tf_cnn_benchmarks/eval',
+flags.DEFINE_string('eval_dir', '/artifacts/',
                     'Directory where to write eval event logs.')
 flags.DEFINE_string('backbone_model_path', None,
                     'Path to pretrained backbone model checkpoint. Pass None '
@@ -653,7 +658,7 @@ flags.DEFINE_integer('trt_max_workspace_size_bytes', 4 << 30,
                      'Max workspace size bytes used by the TensorRT optimizer.')
 
 # Benchmark logging for model garden metric
-flags.DEFINE_string('benchmark_log_dir', None,
+flags.DEFINE_string('benchmark_log_dir', export_dir,
                     'The directory to place the log files containing the '
                     'results of benchmark. The logs are created by '
                     'BenchmarkFileLogger. Requires the root of the Tensorflow '
