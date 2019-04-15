@@ -597,8 +597,8 @@ if job_name == 'master':
     job_name = 'worker'
 
 task_index = os.environ.get('INDEX', 0)
-ps_hosts = os.environ.get('PS_HOSTS', '')
-worker_hosts = os.environ.get('WORKER_HOSTS', '')
+ps_hosts = os.environ.get('PS_HOSTS', '').replace('[', '').replace(']', '')
+worker_hosts = os.environ.get('WORKER_HOSTS', '').replace('[', '').replace(']', '')
 
 # Distributed training parameters.
 flags.DEFINE_enum('job_name', job_name, ('ps', 'worker', 'controller', ''),
