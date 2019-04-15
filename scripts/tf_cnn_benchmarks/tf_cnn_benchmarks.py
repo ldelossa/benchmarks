@@ -22,6 +22,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import os
+
 from absl import app
 from absl import flags as absl_flags
 import tensorflow as tf
@@ -55,7 +57,15 @@ def main(positional_arguments):
     raise ValueError('Received unknown positional arguments: %s'
                      % positional_arguments[1:])
 
+
+
   params = benchmark_cnn.make_params_from_flags()
+
+  # Print ENV Variables
+  tf.logging.debug('=' * 20 + ' Environment Variables ' + '=' * 20)
+  for k, v in os.environ.items():
+      tf.logging.debug('{}: {}'.format(k, v))
+
   with mlperf.mlperf_logger(absl_flags.FLAGS.ml_perf_compliance_logging,
                             params.model):
     params = benchmark_cnn.setup(params)
