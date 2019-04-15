@@ -591,8 +591,8 @@ flags.DEFINE_integer('allreduce_merge_scope', 1,
                      'It may affect the ability of the backend to merge '
                      'parallel ops.')
 
-job_name = os.environ.get('JOB_NAME', '')
-task_index = os.environ.get('TASK_INDEX', 0)
+job_name = os.environ.get('TYPE', '')
+task_index = os.environ.get('INDEX', 0)
 ps_hosts = os.environ.get('PS_HOSTS', '')
 worker_hosts = os.environ.get('WORKER_HOSTS')
 
