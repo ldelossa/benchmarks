@@ -592,6 +592,10 @@ flags.DEFINE_integer('allreduce_merge_scope', 1,
                      'parallel ops.')
 
 job_name = os.environ.get('TYPE', '')
+# change master to worker 
+if job_name == 'master':
+    job_name = 'worker'
+
 task_index = os.environ.get('INDEX', 0)
 ps_hosts = os.environ.get('PS_HOSTS', '')
 worker_hosts = os.environ.get('WORKER_HOSTS')
