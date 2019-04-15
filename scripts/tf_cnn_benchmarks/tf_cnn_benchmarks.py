@@ -62,6 +62,7 @@ def main(positional_arguments):
   params = benchmark_cnn.make_params_from_flags()
 
   # Print ENV Variables
+  tf.logging.set_verbosity(tf.logging.DEBUG)
   tf.logging.debug('=' * 20 + ' Environment Variables ' + '=' * 20)
   for k, v in os.environ.items():
       tf.logging.debug('{}: {}'.format(k, v))
