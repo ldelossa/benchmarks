@@ -34,10 +34,9 @@ import flags
 import mlperf
 from cnn_util import log_fn
 
-
 flags.define_flags()
 for name in flags.param_specs.keys():
-  absl_flags.declare_key_flag(name)
+    absl_flags.declare_key_flag(name)
 
 absl_flags.DEFINE_boolean(
     'ml_perf_compliance_logging', False,
@@ -48,37 +47,34 @@ absl_flags.DEFINE_boolean(
 
 
 def main(positional_arguments):
-  # Command-line arguments like '--distortions False' are equivalent to
-  # '--distortions=True False', where False is a positional argument. To prevent
-  # this from silently running with distortions, we do not allow positional
-  # arguments.
-  assert len(positional_arguments) >= 1
-  if len(positional_arguments) > 1:
-    raise ValueError('Received unknown positional arguments: %s'
-                     % positional_arguments[1:])
+    # Command-line arguments like '--distortions False' are equivalent to
+    # '--distortions=True False', where False is a positional argument. To prevent
+    # this from silently running with distortions, we do not allow positional
+    # arguments.
+    assert len(positional_arguments) >= 1
+    if len(positional_arguments) > 1:
+        raise ValueError('Received unknown positional arguments: %s'
+                         % positional_arguments[1:])
 
+    params = benchmark_cnn.make_params_from_flags()
 
+    # Print ENV Variables
+    tf.logging.debug('=' * 20 + ' Environment Variables ' + '=' * 20)
+    for k, v in os.environ.items():
+        tf.logging.debug('{}: {}'.format(k, v))
 
-  params = benchmark_cnn.make_params_from_flags()
+    with mlperf.mlperf_logger(absl_flags.FLAGS.ml_perf_compliance_logging,
+                              params.model):
+        params = benchmark_cnn.setup(params)
+        bench = benchmark_cnn.BenchmarkCNN(params)
 
-  # Print ENV Variables
-  tf.logging.set_verbosity(tf.logging.DEBUG)
-  tf.logging.debug('=' * 20 + ' Environment Variables ' + '=' * 20)
-  for k, v in os.environ.items():
-      tf.logging.debug('{}: {}'.format(k, v))
+        tfversion = cnn_util.tensorflow_version_tuple()
 
-  with mlperf.mlperf_logger(absl_flags.FLAGS.ml_perf_compliance_logging,
-                            params.model):
-    params = benchmark_cnn.setup(params)
-    bench = benchmark_cnn.BenchmarkCNN(params)
+        log_fn('TensorFlow:  %i.%i' % (tfversion[0], tfversion[1]))
 
-    tfversion = cnn_util.tensorflow_version_tuple()
-
-    log_fn('TensorFlow:  %i.%i' % (tfversion[0], tfversion[1]))
-
-    bench.print_info()
-    bench.run()
+        bench.print_info()
+        bench.run()
 
 
 if __name__ == '__main__':
-  app.run(main)  # Raises error on invalid flags, unlike tf.app.run()
+    app.run(main)  # Raises error on invalid flags, unlike tf.app.run()
