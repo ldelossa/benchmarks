@@ -596,7 +596,7 @@ job_name = os.environ.get('TYPE', '')
 if job_name == 'master':
     job_name = 'worker'
 
-task_index = os.environ.get('INDEX', 0)
+task_index = os.environ.get('INDEX', '')
 ps_hosts = os.environ.get('PS_HOSTS', '').replace('[', '').replace(']', '').replace(' ', ',')
 worker_hosts = os.environ.get('WORKER_HOSTS', '').replace('[', '').replace(']', '').replace(' ', ',')
 
