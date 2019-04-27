@@ -2264,6 +2264,8 @@ class BenchmarkCNN(object):
         self.params.train_dir or
         self.dataset.queue_runner_required())
     target = self.cluster_manager.get_target() if self.cluster_manager else ''
+    config=create_config_proto(self.params),
+    print("DEBUG: protobuff config: {}".format(config))
     with sv.managed_session(
         master=target,
         config=create_config_proto(self.params),
@@ -3034,7 +3036,7 @@ class BenchmarkCNN(object):
     for task_num in range(self.num_workers):
       # Reset the devices that self.variable_mgr knows about to those
       # belonging to the next worker (task).
-      # self.reset_devices_for_task(task_num, is_local)
+      self.reset_devices_for_task(task_num, is_local)
       # Build the per-worker image processing
       with tf.name_scope('input_processing'):
         input_processing_info = self._build_input_processing(
