@@ -3034,7 +3034,7 @@ class BenchmarkCNN(object):
     for task_num in range(self.num_workers):
       # Reset the devices that self.variable_mgr knows about to those
       # belonging to the next worker (task).
-      self.reset_devices_for_task(task_num, is_local)
+      # self.reset_devices_for_task(task_num, is_local)
       # Build the per-worker image processing
       with tf.name_scope('input_processing'):
         input_processing_info = self._build_input_processing(
