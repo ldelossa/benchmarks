@@ -239,6 +239,7 @@ class GrpcClusterManager(BaseClusterManager):
     if params.job_name == 'controller':
       self._target = 'grpc://%s' % self._cluster_spec.job_tasks('worker')[0]
     else:
+      print("Debug: Task Index: {}", params.task_index)
       self._server = tf.train.Server(self._cluster_spec,
                                      job_name=params.job_name,
                                      task_index=params.task_index,
